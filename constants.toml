@@ -26,6 +26,7 @@
 
 [radioStations]
   "1Mix House"                       = "http://www.1mix.co.uk/house/listenxh.m3u"
+  
   "1Mix Trance"                      = "http://www.1mix.co.uk/trance/listenxh.m3u"
   "89.O RTL"                         = "http://fhhalle.hoerradar.de/890rtl-live-mp3-mq"
   "98Radio Rock"                     = "http://servidor30.brlogic.com:8128/live"
