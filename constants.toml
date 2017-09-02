@@ -337,7 +337,7 @@
   "Radio Hyrule"                     = "https://radiohyrule.com/listen.m3u"
   "Radio Impuls"                     = "http://icecast1.play.cz/impuls128.mp3"
   "Radio Marte"                      = "http://onair11.xdevel.com:8092/;"
-  "Radio Niederösterreich"           = "http://mp3noe.apasf.sf.apa.at/"
+  "Radio Niederosterreich"           = "http://mp3noe.apasf.sf.apa.at/"
   "Radio Nova Era"                   = "http://centova.radios.pt:9478/stream"
   "Radio Record"                     = "http://air.radiorecord.ru:8101/rr_320"
   "Radio Regenbogen"                 = "http://streams.regenbogen.de/rr-mannheim-128-mp3"
