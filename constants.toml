@@ -332,6 +332,7 @@
   "Kossuth"                          = "http://stream002.radio.hu/mr1.mp3"
   "Kpopway Radio"                    = "http://smoke.wavestreamer.com:2684/stream/1/"
   "KralPop"                          = "http://kralpopwmp.radyotvonline.com/;stream.nsv"
+  "Laut FM"                          = "http://eins.stream.laut.fm/eins"
   "LBC London"                       = "http://media-the.musicradio.com/LBCLondonMP3"
   "Listen.moe"                       = "http://listen.moe/stream.m3u"
   "LoFi Hip Hop Radio"               = "http://hyades.shoutca.st:8043/stream"
