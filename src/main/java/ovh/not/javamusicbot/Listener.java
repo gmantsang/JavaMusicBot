@@ -195,7 +195,7 @@ class Listener extends ListenerAdapter {
 
     @Override
     public void onStatusChange(StatusChangeEvent event) {
-        switch (event.getStatus()) {
+        switch (event.getNewStatus()) {
             case INITIALIZING:
             case INITIALIZED:
             case LOGGING_IN:
@@ -206,7 +206,7 @@ class Listener extends ListenerAdapter {
         }
 
         JDA.Status oldStatus = event.getOldStatus();
-        JDA.Status status = event.getStatus();
+        JDA.Status status = event.getNewStatus();
 
         logger.info("Status changed from {} to {}", oldStatus.name(), status.name());
 
