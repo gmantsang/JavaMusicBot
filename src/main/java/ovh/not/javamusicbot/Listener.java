@@ -20,6 +20,7 @@ import ovh.not.javamusicbot.audio.GuildAudioController;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -272,7 +273,7 @@ class Listener extends ListenerAdapter {
         }
 
         VoiceChannel joinedChannel = event.getChannelJoined();
-        musicManager.setVoiceChannelId(joinedChannel.getIdLong()); // update the voice channel for this guild
+        musicManager.getState().setVoiceChannelId(Optional.of(joinedChannel.getIdLong())); // update the voice channel for this guild
 
         logger.info("Moved from voice channel {} to {}. Updated GuildAudioController.",
                 event.getChannelLeft().toString(), joinedChannel.toString());

@@ -205,7 +205,7 @@ public class AdminCommand extends Command {
         @Override
         public void run(Context context) {
             GuildAudioController musicManager = this.bot.getGuildsManager().get(context.getEvent().getGuild().getIdLong());
-            if (musicManager == null || !musicManager.isOpen() || musicManager.getPlayer().getPlayingTrack() == null) {
+            if (musicManager == null || !musicManager.getState().isConnectionOpen() || musicManager.getPlayer().getPlayingTrack() == null) {
                 context.reply("Not playing music!");
                 return;
             }
@@ -248,7 +248,7 @@ public class AdminCommand extends Command {
                 context.reply("An error occurred!");
                 return;
             }
-            if (!musicManager.isOpen()) {
+            if (!musicManager.getState().isConnectionOpen()) {
                 musicManager.open(channel, context.getEvent().getAuthor());
             }
             musicManager.getPlayer().playTrack(track);

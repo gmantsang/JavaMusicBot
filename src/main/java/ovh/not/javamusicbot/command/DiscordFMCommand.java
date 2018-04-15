@@ -67,10 +67,10 @@ public class DiscordFMCommand extends Command {
         // todo clean up this absolute mess
         GuildAudioController musicManager = this.bot.getGuildsManager().getOrCreate(context.getEvent().getGuild(),
                 context.getEvent().getTextChannel(), playerManager);
-        if (musicManager.isOpen() && musicManager.getPlayer().getPlayingTrack() != null
-                && musicManager.getVoiceChannelId() != channel.getIdLong()
-                && !context.getEvent().getMember().hasPermission(context.getEvent().getJDA().getVoiceChannelById(musicManager.getVoiceChannelId()), Permission.VOICE_MOVE_OTHERS)) {
-            context.reply("dabBot is already playing music in %s so it cannot be moved. Members with the `Move Members` permission can do this.", context.getEvent().getJDA().getVoiceChannelById(musicManager.getVoiceChannelId()).getName());
+        if (musicManager.getState().isConnectionOpen() && musicManager.getPlayer().getPlayingTrack() != null
+                && musicManager.getState().getVoiceChannelId().get() != channel.getIdLong()
+                && !context.getEvent().getMember().hasPermission(context.getEvent().getJDA().getVoiceChannelById(musicManager.getState().getVoiceChannelId().get()), Permission.VOICE_MOVE_OTHERS)) {
+            context.reply("dabBot is already playing music in %s so it cannot be moved. Members with the `Move Members` permission can do this.", context.getEvent().getJDA().getVoiceChannelById(musicManager.getState().getVoiceChannelId().get()).getName());
             return;
         }
 
@@ -114,7 +114,7 @@ public class DiscordFMCommand extends Command {
             playerManager.loadItem(song, handler);
         }
 
-        if (!musicManager.isOpen()) {
+        if (!musicManager.getState().isConnectionOpen()) {
             musicManager.open(channel, context.getEvent().getAuthor());
         }
     }

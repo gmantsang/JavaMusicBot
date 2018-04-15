@@ -17,15 +17,13 @@ import static ovh.not.javamusicbot.utils.Utils.getPrivateChannel;
 public class GuildAudioController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GuildAudioController.class);
 
+    private final GuildAudioControllerState state = new GuildAudioControllerState();
+
     private final long guildId;
     private final AudioPlayerManager playerManager;
     private final AudioPlayer player;
     private final TrackScheduler scheduler;
     private final MusicBot bot;
-    private volatile boolean open = false;
-
-    // todo remove optional, this is java not rust
-    private Optional<Long> voiceChannelId = Optional.empty();
 
     GuildAudioController(MusicBot bot, Guild guild, long textChannelId, AudioPlayerManager playerManager) {
         this.bot = bot;
@@ -40,6 +38,10 @@ public class GuildAudioController {
         guild.getAudioManager().setSendingHandler(sendHandler);
     }
 
+    public GuildAudioControllerState getState() {
+        return state;
+    }
+
     public AudioPlayerManager getPlayerManager() {
         return playerManager;
     }
@@ -50,22 +52,6 @@ public class GuildAudioController {
 
     public TrackScheduler getScheduler() {
         return scheduler;
-    }
-
-    public boolean isOpen() {
-        return open;
-    }
-
-    public void setOpen(boolean open) {
-        this.open = open;
-    }
-
-    public long getVoiceChannelId() {
-        return voiceChannelId.get();
-    }
-
-    public void setVoiceChannelId(long voiceChannelId) {
-        this.voiceChannelId = Optional.of(voiceChannelId);
     }
 
     private void submitTask(Runnable runnable) {
@@ -92,8 +78,8 @@ public class GuildAudioController {
                 guild.getAudioManager().openAudioConnection(channel);
                 guild.getAudioManager().setSelfDeafened(true);
 
-                this.voiceChannelId = Optional.of(channel.getIdLong());
-                open = true;
+                state.setConnectionOpen(true); // todo remove this, should be updated by setting voiceChannelId
+                state.setVoiceChannelId(Optional.of(channel.getIdLong()));
             } catch (PermissionException e) {
                 if (user != null && !user.isBot()) {
                     getPrivateChannel(user).sendMessage("**dabBot does not have permission to connect to the "
@@ -118,8 +104,10 @@ public class GuildAudioController {
             }
 
             guild.getAudioManager().closeAudioConnection();
-            this.voiceChannelId = Optional.empty();
-            open = false;
+
+            // todo remove double write locking & unlocking
+            state.setConnectionOpen(false);
+            state.setVoiceChannelId(Optional.empty());
         });
     }
 }
