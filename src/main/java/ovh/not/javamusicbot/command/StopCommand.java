@@ -18,7 +18,7 @@ public class StopCommand extends Command {
         GuildAudioController musicManager = this.bot.getGuildsManager().get(guildId);
 
         if (musicManager != null) {
-            musicManager.close();
+            musicManager.getConnector().closeConnection();
             musicManager.getScheduler().getQueue().clear();
             musicManager.getScheduler().next(null);
 

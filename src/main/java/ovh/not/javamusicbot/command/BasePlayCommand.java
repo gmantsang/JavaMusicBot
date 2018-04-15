@@ -57,7 +57,7 @@ abstract class BasePlayCommand extends Command {
 
         playerManager.loadItem(String.join(" ", context.getArgs()), handler);
         if (!musicManager.getState().isConnectionOpen()) {
-            musicManager.open(channel, context.getEvent().getAuthor());
+            musicManager.getConnector().openConnection(channel, context.getEvent().getAuthor());
         }
     }
 

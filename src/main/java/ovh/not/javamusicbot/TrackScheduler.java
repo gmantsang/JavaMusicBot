@@ -86,7 +86,7 @@ public class TrackScheduler extends AudioEventAdapter {
             }
         }
         if (!player.startTrack(track, false)) {
-            musicManager.close();
+            musicManager.getConnector().closeConnection();
         }
     }
 

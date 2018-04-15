@@ -53,7 +53,7 @@ public class LoadResultHandler implements AudioLoadResultHandler {
                 context.reply("No song matches found! Usage: `{{prefix}}play <link or youtube video title>` or " +
                         "`{{prefix}}soundcloud <soundcloud song title>`");
                 if (musicManager.getPlayer().getPlayingTrack() == null && musicManager.getScheduler().getQueue().isEmpty()) {
-                    musicManager.close();
+                    musicManager.getConnector().closeConnection();
                 }
                 return;
             }
@@ -68,7 +68,7 @@ public class LoadResultHandler implements AudioLoadResultHandler {
                 if (!found) {
                     context.reply("Selection cancelled!");
                     if (musicManager.getPlayer().getPlayingTrack() == null && musicManager.getScheduler().getQueue().isEmpty()) {
-                        musicManager.close();
+                        musicManager.getConnector().closeConnection();
                     }
                     return;
                 }
@@ -90,7 +90,7 @@ public class LoadResultHandler implements AudioLoadResultHandler {
                         "`{{prefix}}soundcloud <soundcloud song title>`");
                 if (context.getEvent().getGuild().getAudioManager().isConnected() &&
                         musicManager.getPlayer().getPlayingTrack() == null && musicManager.getScheduler().getQueue().isEmpty()) {
-                    musicManager.close();
+                    musicManager.getConnector().closeConnection();
                 }
             } else if (allowSearch) {
                 this.isSearch = true;

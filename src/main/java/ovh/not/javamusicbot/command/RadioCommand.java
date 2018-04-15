@@ -97,7 +97,7 @@ public class RadioCommand extends Command {
         playerManager.loadItem(url, handler);
 
         if (!musicManager.getState().isConnectionOpen()) {
-            musicManager.open(channel, context.getEvent().getAuthor());
+            musicManager.getConnector().openConnection(channel, context.getEvent().getAuthor());
         }
     }
 }

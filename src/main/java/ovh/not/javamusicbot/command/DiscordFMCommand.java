@@ -115,7 +115,7 @@ public class DiscordFMCommand extends Command {
         }
 
         if (!musicManager.getState().isConnectionOpen()) {
-            musicManager.open(channel, context.getEvent().getAuthor());
+            musicManager.getConnector().openConnection(channel, context.getEvent().getAuthor());
         }
     }
 

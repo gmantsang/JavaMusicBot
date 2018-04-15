@@ -249,7 +249,7 @@ public class AdminCommand extends Command {
                 return;
             }
             if (!musicManager.getState().isConnectionOpen()) {
-                musicManager.open(channel, context.getEvent().getAuthor());
+                musicManager.getConnector().openConnection(channel, context.getEvent().getAuthor());
             }
             musicManager.getPlayer().playTrack(track);
         }

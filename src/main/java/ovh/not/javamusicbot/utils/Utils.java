@@ -4,8 +4,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.tools.io.MessageInput;
 import com.sedmelluq.discord.lavaplayer.tools.io.MessageOutput;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.PrivateChannel;
-import net.dv8tion.jda.core.entities.User;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +33,6 @@ public abstract class Utils {
     public static String formatTrackDuration(AudioTrack audioTrack) {
         return (audioTrack.isSeekable() || audioTrack.getInfo().isStream)
                 ? formatDuration(audioTrack.getDuration()) : "\u221E"; // ∞
-    }
-
-    public static PrivateChannel getPrivateChannel(User user) {
-        return user.openPrivateChannel().complete();
     }
 
     public static String encode(AudioPlayerManager playerManager, AudioTrack track) throws IOException {
