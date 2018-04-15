@@ -33,14 +33,14 @@ abstract class BasePlayCommand extends Command {
             context.reply("You must be in a voice channel!");
             return;
         }
-      
+
+        // todo clean up this absolute mess
         GuildAudioController musicManager = this.bot.getGuildsManager().getOrCreate(context.getEvent().getGuild(),
                 context.getEvent().getTextChannel(), playerManager);
         if (musicManager.isOpen() && musicManager.getPlayer().getPlayingTrack() != null
-                && musicManager.getChannel() != channel
-                && !context.getEvent().getMember().hasPermission(musicManager.getChannel(), Permission.VOICE_MOVE_OTHERS)) {
-
-            context.reply("dabBot is already playing music in %s so it cannot be moved. Members with the `Move Members` permission can do this.", musicManager.getChannel().getName());
+                && musicManager.getVoiceChannelId() != channel.getIdLong()
+                && !context.getEvent().getMember().hasPermission(context.getEvent().getJDA().getVoiceChannelById(musicManager.getVoiceChannelId()), Permission.VOICE_MOVE_OTHERS)) {
+            context.reply("dabBot is already playing music in %s so it cannot be moved. Members with the `Move Members` permission can do this.", context.getEvent().getJDA().getVoiceChannelById(musicManager.getVoiceChannelId()).getName());
             return;
         }
 

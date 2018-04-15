@@ -14,14 +14,15 @@ public class StopCommand extends Command {
     @Override
     public void on(Context context) {
         Guild guild = context.getEvent().getGuild();
-        GuildAudioController musicManager = this.bot.getGuildsManager().get(guild);
+        long guildId = guild.getIdLong();
+        GuildAudioController musicManager = this.bot.getGuildsManager().get(guildId);
 
         if (musicManager != null) {
             musicManager.close();
             musicManager.getScheduler().getQueue().clear();
             musicManager.getScheduler().next(null);
 
-            this.bot.getGuildsManager().remove(guild);
+            this.bot.getGuildsManager().remove(guildId);
 
             context.reply("Stopped playing music & left the voice channel.");
         } else {

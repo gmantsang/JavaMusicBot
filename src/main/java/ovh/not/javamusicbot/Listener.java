@@ -33,9 +33,7 @@ class Listener extends ListenerAdapter {
     private static final String DBOTS_ORG_STATS_URL = "https://discordbots.org/api/bots/%s/stats";
 
     private final MusicBot bot;
-
     private final Pattern commandPattern;
-
     private final CommandManager commandManager;
 
     Listener(MusicBot bot) {
@@ -184,7 +182,7 @@ class Listener extends ListenerAdapter {
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
-        GuildAudioController musicManager = this.bot.getGuildsManager().remove(event.getGuild());
+        GuildAudioController musicManager = this.bot.getGuildsManager().remove(event.getGuild().getIdLong());
         if (musicManager != null) {
             musicManager.getPlayer().stopTrack();
             musicManager.getScheduler().getQueue().clear();
@@ -268,13 +266,13 @@ class Listener extends ListenerAdapter {
             return; // user is not self
         }
 
-        GuildAudioController musicManager = this.bot.getGuildsManager().get(event.getGuild());
+        GuildAudioController musicManager = this.bot.getGuildsManager().get(event.getGuild().getIdLong());
         if (musicManager == null) {
             return; // this guild doesn't have a music manager so doesnt matter
         }
 
         VoiceChannel joinedChannel = event.getChannelJoined();
-        musicManager.setChannel(joinedChannel); // update the voice channel for this guild
+        musicManager.setVoiceChannelId(joinedChannel.getIdLong()); // update the voice channel for this guild
 
         logger.info("Moved from voice channel {} to {}. Updated GuildAudioController.",
                 event.getChannelLeft().toString(), joinedChannel.toString());

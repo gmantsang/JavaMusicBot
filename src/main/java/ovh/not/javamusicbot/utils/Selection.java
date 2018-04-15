@@ -3,7 +3,6 @@ package ovh.not.javamusicbot.utils;
 import java.util.function.BiConsumer;
 
 public class Selection<T, R> {
-    
     private final T[] items;
     
     private final Formatter<T, R> formatter;

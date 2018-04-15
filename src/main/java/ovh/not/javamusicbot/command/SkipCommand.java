@@ -11,7 +11,7 @@ public class SkipCommand extends Command {
 
     @Override
     public void on(Context context) {
-        GuildAudioController musicManager = this.bot.getGuildsManager().get(context.getEvent().getGuild());
+        GuildAudioController musicManager = this.bot.getGuildsManager().get(context.getEvent().getGuild().getIdLong());
         if (musicManager == null || musicManager.getPlayer().getPlayingTrack() == null) {
             context.reply("No music is playing on this guild! To play a song use `{{prefix}}play`");
             return;

@@ -18,27 +18,29 @@ import java.util.Queue;
 public class TrackScheduler extends AudioEventAdapter {
     private static final Logger logger = LoggerFactory.getLogger(TrackScheduler.class);
 
+    private final MusicBot musicBot;
     private final GuildAudioController musicManager;
     private final AudioPlayer player;
 
-    private TextChannel textChannel;
+    private long textChannelId;
     private final Queue<AudioTrack> queue;
     private boolean repeat = false;
     private boolean loop = false;
 
-    public TrackScheduler(GuildAudioController musicManager, AudioPlayer player, TextChannel textChannel) {
+    public TrackScheduler(MusicBot musicBot, GuildAudioController musicManager, AudioPlayer player, long textChannelId) {
+        this.musicBot = musicBot;
         this.musicManager = musicManager;
         this.player = player;
-        this.textChannel = textChannel;
+        this.textChannelId = textChannelId;
         this.queue = new LinkedList<>();
     }
 
-    public TextChannel getTextChannel() {
-        return textChannel;
+    public long getTextChannelId() {
+        return textChannelId;
     }
 
-    public void setTextChannel(TextChannel textChannel) {
-        this.textChannel = textChannel;
+    public void setTextChannelId(long textChannelId) {
+        this.textChannelId = textChannelId;
     }
 
     public synchronized Queue<AudioTrack> getQueue() {
@@ -101,6 +103,14 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
+        TextChannel textChannel = musicBot.getShardManager().getTextChannelById(textChannelId);
+
+        if (textChannel == null) {
+            // todo what if the text channel is deleted
+            logger.error("Error getting text channel with ID {} from shard manager", textChannelId);
+            return;
+        }
+
         textChannel.sendMessage(String.format("Now playing **%s** by **%s** `[%s]`", track.getInfo().title,
                 track.getInfo().author, Utils.formatTrackDuration(track))).complete();
     }

@@ -9,7 +9,6 @@ import ovh.not.javamusicbot.Config;
 import ovh.not.javamusicbot.MusicBot;
 
 public class PermissionReader {
-
     private final MusicBot bot;
 
     public PermissionReader(MusicBot bot) {

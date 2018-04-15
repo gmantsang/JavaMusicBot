@@ -4,7 +4,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
@@ -12,8 +11,8 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ovh.not.javamusicbot.Command;
-import ovh.not.javamusicbot.audio.GuildAudioController;
 import ovh.not.javamusicbot.MusicBot;
+import ovh.not.javamusicbot.audio.GuildAudioController;
 import ovh.not.javamusicbot.utils.Utils;
 
 import java.io.IOException;
@@ -41,15 +40,13 @@ public class LoadCommand extends Command {
             return;
         }
 
-        MessageReceivedEvent event = context.getEvent();
-
-        GuildAudioController musicManager = this.bot.getGuildsManager().getOrCreate(event.getGuild(), event.getTextChannel(),
-                playerManager);
+        // todo clean up this absolute mess
+        GuildAudioController musicManager = this.bot.getGuildsManager().getOrCreate(context.getEvent().getGuild(),
+                context.getEvent().getTextChannel(), playerManager);
         if (musicManager.isOpen() && musicManager.getPlayer().getPlayingTrack() != null
-                && musicManager.getChannel() != channel
-                && !event.getMember().hasPermission(musicManager.getChannel(), Permission.VOICE_MOVE_OTHERS)) {
-            context.reply("dabBot is already playing music in %s so it cannot be moved. Members with the " +
-                    "`Move Members` permission can do this.", musicManager.getChannel().getName());
+                && musicManager.getVoiceChannelId() != channel.getIdLong()
+                && !context.getEvent().getMember().hasPermission(context.getEvent().getJDA().getVoiceChannelById(musicManager.getVoiceChannelId()), Permission.VOICE_MOVE_OTHERS)) {
+            context.reply("dabBot is already playing music in %s so it cannot be moved. Members with the `Move Members` permission can do this.", context.getEvent().getJDA().getVoiceChannelById(musicManager.getVoiceChannelId()).getName());
             return;
         }
 

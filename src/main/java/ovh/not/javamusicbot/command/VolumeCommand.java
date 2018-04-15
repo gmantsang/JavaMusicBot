@@ -22,7 +22,7 @@ public class VolumeCommand extends Command {
         MessageReceivedEvent event = context.getEvent();
         Guild guild = event.getGuild();
 
-        GuildAudioController musicManager = this.bot.getGuildsManager().get(guild);
+        GuildAudioController musicManager = this.bot.getGuildsManager().get(guild.getIdLong());
         if (musicManager == null || musicManager.getPlayer().getPlayingTrack() == null) {
             context.reply("No music is playing on this guild! To play a song use `{{prefix}}play`");
             return;

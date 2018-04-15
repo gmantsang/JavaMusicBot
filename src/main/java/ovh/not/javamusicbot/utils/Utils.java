@@ -53,30 +53,4 @@ public abstract class Utils {
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
         return playerManager.decodeTrack(new MessageInput(stream)).decodedTrack;
     }
-
-    /*private static Optional<WebhookClient> webhookClient = Optional.empty();
-
-    public static Optional<WebhookClient> getWebhookClient() {
-        if (!webhookClient.isPresent()) {
-            String webhookUrl = MusicBot.getConfigs().config.statusWebhook;
-            if (webhookUrl == null) {
-                return Optional.empty();
-            }
-
-            Pattern pattern = Pattern.compile("webhooks/(\\d+)/(.+)$");
-            Matcher matcher = pattern.matcher(webhookUrl);
-
-            if (!matcher.find()) {
-                LOGGER.error("invalid webhook, could not be matched by regex");
-                return Optional.empty();
-            }
-
-            long id = Long.parseLong(matcher.group(1));
-            String token = matcher.group(2);
-
-            webhookClient = Optional.of(new WebhookClientBuilder(id, token).build());
-        }
-
-        return webhookClient;
-    }*/
 }

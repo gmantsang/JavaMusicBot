@@ -17,28 +17,27 @@ import static ovh.not.javamusicbot.utils.Utils.getPrivateChannel;
 public class GuildAudioController {
     private static final Logger LOGGER = LoggerFactory.getLogger(GuildAudioController.class);
 
-    private final Guild guild;
+    private final long guildId;
     private final AudioPlayerManager playerManager;
     private final AudioPlayer player;
     private final TrackScheduler scheduler;
-    private final AudioPlayerSendHandler sendHandler;
     private final MusicBot bot;
     private volatile boolean open = false;
-    private Optional<VoiceChannel> channel = Optional.empty();
 
-    GuildAudioController(MusicBot bot, Guild guild, TextChannel textChannel, AudioPlayerManager playerManager) {
+    // todo remove optional, this is java not rust
+    private Optional<Long> voiceChannelId = Optional.empty();
+
+    GuildAudioController(MusicBot bot, Guild guild, long textChannelId, AudioPlayerManager playerManager) {
         this.bot = bot;
-        this.guild = guild;
+        this.guildId = guild.getIdLong();
         this.playerManager = playerManager;
         this.player = playerManager.createPlayer();
-        this.scheduler = new TrackScheduler(this, player, textChannel);
-        this.player.addListener(scheduler);
-        this.sendHandler = new AudioPlayerSendHandler(player);
-        this.guild.getAudioManager().setSendingHandler(sendHandler);
-    }
 
-    public Guild getGuild() {
-        return guild;
+        this.scheduler = new TrackScheduler(bot, this, player, textChannelId);
+        this.player.addListener(scheduler);
+
+        AudioPlayerSendHandler sendHandler = new AudioPlayerSendHandler(player);
+        guild.getAudioManager().setSendingHandler(sendHandler);
     }
 
     public AudioPlayerManager getPlayerManager() {
@@ -53,10 +52,6 @@ public class GuildAudioController {
         return scheduler;
     }
 
-    public AudioPlayerSendHandler getSendHandler() {
-        return sendHandler;
-    }
-
     public boolean isOpen() {
         return open;
     }
@@ -65,12 +60,12 @@ public class GuildAudioController {
         this.open = open;
     }
 
-    public VoiceChannel getChannel() {
-        return channel.get();
+    public long getVoiceChannelId() {
+        return voiceChannelId.get();
     }
 
-    public void setChannel(VoiceChannel channel) {
-        this.channel = Optional.of(channel);
+    public void setVoiceChannelId(long voiceChannelId) {
+        this.voiceChannelId = Optional.of(voiceChannelId);
     }
 
     private void submitTask(Runnable runnable) {
@@ -79,16 +74,25 @@ public class GuildAudioController {
 
     public void open(VoiceChannel channel, User user) {
         submitTask(() -> {
+            Guild guild = bot.getShardManager().getGuildById(guildId);
+
+            if (guild == null) {
+                // todo what if guild no longer exists
+                LOGGER.error("Error getting guild with ID {} from shard manager", guildId);
+                return;
+            }
+
             try {
                 final Member self = guild.getSelfMember();
 
-                if (!self.hasPermission(channel, Permission.VOICE_CONNECT))
+                if (!self.hasPermission(channel, Permission.VOICE_CONNECT)) {
                     throw new PermissionException(Permission.VOICE_CONNECT.getName());
+                }
 
                 guild.getAudioManager().openAudioConnection(channel);
                 guild.getAudioManager().setSelfDeafened(true);
 
-                this.channel = Optional.of(channel);
+                this.voiceChannelId = Optional.of(channel.getIdLong());
                 open = true;
             } catch (PermissionException e) {
                 if (user != null && !user.isBot()) {
@@ -105,8 +109,16 @@ public class GuildAudioController {
 
     public void close() {
         submitTask(() -> {
+            Guild guild = bot.getShardManager().getGuildById(guildId);
+
+            if (guild == null) {
+                // todo what if guild no longer exists
+                LOGGER.error("Error getting guild with ID {} from shard manager", guildId);
+                return;
+            }
+
             guild.getAudioManager().closeAudioConnection();
-            this.channel = null;
+            this.voiceChannelId = Optional.empty();
             open = false;
         });
     }

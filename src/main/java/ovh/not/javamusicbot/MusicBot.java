@@ -3,6 +3,7 @@ package ovh.not.javamusicbot;
 import com.google.gson.Gson;
 import com.moandjiezana.toml.Toml;
 import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.entities.Game;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -48,8 +49,8 @@ public final class MusicBot {
     private volatile ConfigLoadResult configs = null;
 
     private PermissionReader permissionReader;
-
     private GuildAudioManager guildsManager;
+    private ShardManager shardManager;
 
     public static void main(String[] args) {
         MusicBot bot = new MusicBot();
@@ -82,7 +83,7 @@ public final class MusicBot {
         // todo set reconnect ipc queue (when alpaca adds support for it)
 
         try {
-            builder.build();
+            bot.shardManager = builder.build();
         } catch (LoginException e) {
             logger.error("error on call to ShardManager#buildBlocking", e);
         }
@@ -122,5 +123,9 @@ public final class MusicBot {
             this.config = config;
             this.constants = constants;
         }
+    }
+
+    public ShardManager getShardManager() {
+        return shardManager;
     }
 }

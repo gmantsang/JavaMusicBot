@@ -11,24 +11,26 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GuildAudioManager {
     private final MusicBot bot;
     
-    private final Map<Guild, GuildAudioController> guilds = new ConcurrentHashMap<>();
+    private final Map<Long, GuildAudioController> guildAudioControllers = new ConcurrentHashMap<>();
 
     public GuildAudioManager(MusicBot bot) {
         this.bot = bot;
     }
 
     public GuildAudioController getOrCreate(Guild guild, TextChannel textChannel, AudioPlayerManager playerManager) {
-        GuildAudioController manager = guilds.computeIfAbsent(guild, $ -> new GuildAudioController(bot, guild, textChannel, playerManager));
-        manager.getScheduler().setTextChannel(textChannel);
+        GuildAudioController manager = guildAudioControllers.computeIfAbsent(guild.getIdLong(), $ ->
+                new GuildAudioController(bot, guild, textChannel.getIdLong(), playerManager));
+
+        manager.getScheduler().setTextChannelId(textChannel.getIdLong());
         return manager;
     }
 
-    public GuildAudioController get(Guild guild) {
-        return guilds.get(guild);
+    public GuildAudioController get(long guildId) {
+        return guildAudioControllers.get(guildId);
     }
 
-    public GuildAudioController remove(Guild guild) {
-        return this.guilds.remove(guild);
+    public GuildAudioController remove(long guildId) {
+        return guildAudioControllers.remove(guildId);
     }
 
 }
