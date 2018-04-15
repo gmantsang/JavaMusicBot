@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import ovh.not.javamusicbot.Command;
 import ovh.not.javamusicbot.CommandManager;
-import ovh.not.javamusicbot.audio.GuildAudioController;
+import ovh.not.javamusicbot.audio.guild.GuildAudioController;
 
 public class LoadResultHandler implements AudioLoadResultHandler {
     private static final Logger logger = LoggerFactory.getLogger(LoadResultHandler.class);

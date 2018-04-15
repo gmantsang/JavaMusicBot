@@ -1,4 +1,4 @@
-package ovh.not.javamusicbot.audio;
+package ovh.not.javamusicbot.audio.guild;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.core.entities.Guild;

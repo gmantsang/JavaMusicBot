@@ -8,7 +8,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ovh.not.javamusicbot.audio.GuildAudioController;
+import ovh.not.javamusicbot.audio.guild.GuildAudioController;
 import ovh.not.javamusicbot.utils.Utils;
 
 import java.util.LinkedList;

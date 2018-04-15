@@ -1,4 +1,4 @@
-package ovh.not.javamusicbot.audio;
+package ovh.not.javamusicbot.audio.guild;
 
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.Permission;

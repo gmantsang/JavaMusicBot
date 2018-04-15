@@ -1,4 +1,4 @@
-package ovh.not.javamusicbot.audio;
+package ovh.not.javamusicbot.audio.guild;
 
 import java.util.Optional;
 import java.util.concurrent.locks.ReadWriteLock;

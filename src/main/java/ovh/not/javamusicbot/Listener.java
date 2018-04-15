@@ -15,7 +15,7 @@ import okhttp3.RequestBody;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ovh.not.javamusicbot.audio.GuildAudioController;
+import ovh.not.javamusicbot.audio.guild.GuildAudioController;
 
 import java.awt.*;
 import java.io.IOException;

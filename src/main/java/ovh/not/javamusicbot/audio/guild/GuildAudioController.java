@@ -1,10 +1,11 @@
-package ovh.not.javamusicbot.audio;
+package ovh.not.javamusicbot.audio.guild;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.core.entities.Guild;
 import ovh.not.javamusicbot.MusicBot;
 import ovh.not.javamusicbot.TrackScheduler;
+import ovh.not.javamusicbot.audio.AudioPlayerSendHandler;
 
 import java.util.concurrent.ExecutorService;
 

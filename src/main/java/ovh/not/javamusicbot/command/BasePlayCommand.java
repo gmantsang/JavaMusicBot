@@ -4,7 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import ovh.not.javamusicbot.*;
-import ovh.not.javamusicbot.audio.GuildAudioController;
+import ovh.not.javamusicbot.audio.guild.GuildAudioController;
 import ovh.not.javamusicbot.utils.LoadResultHandler;
 
 import java.util.Set;

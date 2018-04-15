@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import ovh.not.javamusicbot.Command;
 import ovh.not.javamusicbot.CommandManager;
 import ovh.not.javamusicbot.MusicBot;
-import ovh.not.javamusicbot.audio.GuildAudioController;
+import ovh.not.javamusicbot.audio.guild.GuildAudioController;
 import ovh.not.javamusicbot.utils.LoadResultHandler;
 
 public class RadioCommand extends Command {
