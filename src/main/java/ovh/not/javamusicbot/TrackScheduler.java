@@ -35,10 +35,6 @@ public class TrackScheduler extends AudioEventAdapter {
         this.queue = new LinkedList<>();
     }
 
-    public long getTextChannelId() {
-        return textChannelId;
-    }
-
     public void setTextChannelId(long textChannelId) {
         this.textChannelId = textChannelId;
     }

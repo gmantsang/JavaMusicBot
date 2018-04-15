@@ -20,10 +20,7 @@ public class Config {
     public String discordServer = null;
     public String supporterRole = null;
     public String superSupporterRole = null;
-    String superDuperSupporterRole = null;
     public String owoKey = null;
     String statusWebhook = null;
     String statusToken = null;
-    public String statsDHost = null;
-    public int statsDPort = 0;
 }

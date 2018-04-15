@@ -23,15 +23,11 @@ public class RadioCommand extends Command {
         reloadUsageMessage(bot);
     }
 
-    public static void reloadUsageMessage(MusicBot bot) {
-        StringBuilder builder = new StringBuilder("Streams a variety of radio stations.\n" +
+    static void reloadUsageMessage(MusicBot bot) {
+        usageMessage = "Streams a variety of radio stations.\n" +
                 "Usage: `{{prefix}}radio <station>`\n" +
-                "\n**Available stations:**\n");
-
-        builder.append(bot.getConfigs().constants.getRadioStations());
-
-        builder.append("\n\nNeed another station? Join the support server with the link in `{{prefix}}support`.");
-        usageMessage = builder.toString();
+                "\n**Available stations:**\n" + bot.getConfigs().constants.getRadioStations() +
+                "\n\nNeed another station? Join the support server with the link in `{{prefix}}support`.";
     }
 
     @Override

@@ -107,32 +107,16 @@ public class LoadResultHandler implements AudioLoadResultHandler {
         }
     }
 
-    public boolean isVerbose() {
-        return verbose;
-    }
-
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
-    }
-
-    public boolean isSearch() {
-        return isSearch;
     }
 
     public void setSearch(boolean search) {
         isSearch = search;
     }
 
-    public boolean isAllowSearch() {
-        return allowSearch;
-    }
-
     public void setAllowSearch(boolean allowSearch) {
         this.allowSearch = allowSearch;
-    }
-
-    public boolean isSetFirstInQueue() {
-        return setFirstInQueue;
     }
 
     public void setSetFirstInQueue(boolean setFirstInQueue) {

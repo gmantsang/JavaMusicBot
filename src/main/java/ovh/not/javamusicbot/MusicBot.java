@@ -59,7 +59,6 @@ public final class MusicBot {
         bot.guildsManager = new GuildAudioManager(bot);
 
         DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder()
-                //.setReconnectQueue(new SessionReconnectQueue())
                 .addEventListeners(new Listener(bot))
                 .setToken(config.token)
                 .setAudioEnabled(true)
@@ -80,7 +79,7 @@ public final class MusicBot {
             }
         }
 
-        // todo set reconnect ipc queue (when alpaca adds support for it)
+        // todo set reconnect ipc queue
 
         try {
             bot.shardManager = builder.build();

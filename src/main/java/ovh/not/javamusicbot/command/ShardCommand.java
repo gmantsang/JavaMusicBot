@@ -8,7 +8,6 @@ import ovh.not.javamusicbot.MusicBot;
 public class ShardCommand extends Command {
     public ShardCommand(MusicBot bot) {
         super(bot, "shard", "debug");
-        setHidden(true);
     }
 
     @Override

@@ -16,7 +16,6 @@ public abstract class Command {
 
     protected final MusicBot bot;
     private String[] names;
-    private boolean hide = false;
 
     protected Command(MusicBot bot, String name, String... names) {
         this.bot = bot;
@@ -27,18 +26,6 @@ public abstract class Command {
 
     public String[] getNames(){
         return names;
-    }
-
-    public void setNames(String[] names) {
-        this.names = names;
-    }
-
-    public boolean isHidden(){
-        return this.hide;
-    }
-
-    protected void setHidden(boolean hidden) {
-        this.hide = hidden;
     }
 
     public abstract void on(Context context);

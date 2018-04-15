@@ -106,35 +106,11 @@ public class Pageable<T> {
         return this.maxPages;
     }
 
-    public int getPreviousPage() {
-        if (page > 1) {
-            return page - 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public int getNextPage() {
-        if (page < maxPages) {
-            return page + 1;
-        } else {
-            return 0;
-        }
-    }
-
     public int getMinPageRange() {
         if (getPage() > PAGE_WINDOW) {
             return getPage() - PAGE_WINDOW;
         } else {
             return 1;
-        }
-    }
-
-    public int getMaxPageRange() {
-        if (getPage() < (getMaxPages() - PAGE_WINDOW)) {
-            return getPage() + PAGE_WINDOW;
-        } else {
-            return getMaxPages();
         }
     }
 }

@@ -30,7 +30,7 @@ public class AdminCommand extends Command {
 
     public AdminCommand(MusicBot bot, AudioPlayerManager playerManager) {
         super(bot,"admin", "a");
-        setHidden(true);
+
         CommandManager.register(subCommands,
                 new EvalCommand(),
                 new ShutdownCommand(),
