@@ -3,7 +3,10 @@ package ovh.not.javamusicbot.audio;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +14,7 @@ import ovh.not.javamusicbot.MusicBot;
 import ovh.not.javamusicbot.TrackScheduler;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 
 import static ovh.not.javamusicbot.utils.Utils.getPrivateChannel;
 
@@ -19,22 +23,25 @@ public class GuildAudioController {
 
     private final GuildAudioControllerState state = new GuildAudioControllerState();
 
+    private final MusicBot bot;
     private final long guildId;
     private final AudioPlayerManager playerManager;
+    private final ExecutorService executorService;
+
     private final AudioPlayer player;
     private final TrackScheduler scheduler;
-    private final MusicBot bot;
 
-    GuildAudioController(MusicBot bot, Guild guild, long textChannelId, AudioPlayerManager playerManager) {
+    GuildAudioController(MusicBot bot, Guild guild, long textChannelId, AudioPlayerManager playerManager, ExecutorService executorService) {
         this.bot = bot;
         this.guildId = guild.getIdLong();
         this.playerManager = playerManager;
-        this.player = playerManager.createPlayer();
+        this.executorService = executorService;
 
-        this.scheduler = new TrackScheduler(bot, this, player, textChannelId);
+        this.player = playerManager.createPlayer();
+        this.scheduler = new TrackScheduler(bot, this, this.player, textChannelId);
         this.player.addListener(scheduler);
 
-        AudioPlayerSendHandler sendHandler = new AudioPlayerSendHandler(player);
+        AudioPlayerSendHandler sendHandler = new AudioPlayerSendHandler(this.player);
         guild.getAudioManager().setSendingHandler(sendHandler);
     }
 
@@ -54,12 +61,8 @@ public class GuildAudioController {
         return scheduler;
     }
 
-    private void submitTask(Runnable runnable) {
-        new Thread(runnable).start();
-    }
-
     public void open(VoiceChannel channel, User user) {
-        submitTask(() -> {
+        executorService.submit(() -> {
             Guild guild = bot.getShardManager().getGuildById(guildId);
 
             if (guild == null) {
@@ -94,7 +97,7 @@ public class GuildAudioController {
     }
 
     public void close() {
-        submitTask(() -> {
+        executorService.submit(() -> {
             Guild guild = bot.getShardManager().getGuildById(guildId);
 
             if (guild == null) {
