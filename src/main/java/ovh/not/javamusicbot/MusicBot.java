@@ -127,6 +127,10 @@ public final class MusicBot {
         return guildsManager;
     }
 
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
     public class ConfigLoadResult {
         public final Config config;
         public final Constants constants;

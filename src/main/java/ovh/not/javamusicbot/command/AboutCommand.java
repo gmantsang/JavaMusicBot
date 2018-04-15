@@ -6,6 +6,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class AboutCommand extends Command {
     public AboutCommand(MusicBot bot) {
         super(bot, "about", "info", "support");
+        setDescription("Information about the bot");
     }
 
     @Override

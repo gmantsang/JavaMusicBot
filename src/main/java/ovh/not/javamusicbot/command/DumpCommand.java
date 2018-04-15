@@ -28,6 +28,7 @@ public class DumpCommand extends Command {
 
     public DumpCommand(MusicBot bot, AudioPlayerManager playerManager) {
         super(bot, "dump");
+        setDescription("Outputs the music queue as a json string");
         this.playerManager = playerManager;
         owo = new OwO.Builder()
                 .setKey(bot.getConfigs().config.owoKey)

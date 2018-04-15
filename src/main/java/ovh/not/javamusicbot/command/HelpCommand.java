@@ -8,12 +8,15 @@ import java.util.stream.Collectors;
 public class HelpCommand extends Command {
     public HelpCommand(MusicBot bot) {
         super(bot, "help", "commands", "h", "music");
+        setDescription("Shows command help");
     }
 
     @Override
     public void on(Context context) {
-        String descriptions = this.bot.getConfigs().constants.getCommandDescriptions().entrySet().stream()
-                .map(e -> String.format("`%s` %s", e.getKey(), e.getValue()))
+        String descriptions = bot.getCommandManager().getCommands().entrySet().stream()
+                .filter(entry -> entry.getValue().getDescription().isPresent()
+                        && entry.getKey().equals(entry.getValue().getNames()[0]))
+                .map(e -> String.format("`%s` %s", e.getKey(), e.getValue().getDescription().get()))
                 .sorted(String::compareTo)
                 .collect(Collectors.joining("\n"));
 

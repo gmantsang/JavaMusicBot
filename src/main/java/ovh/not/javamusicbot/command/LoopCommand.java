@@ -7,6 +7,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class LoopCommand extends Command {
     public LoopCommand(MusicBot bot) {
         super(bot, "loop");
+        setDescription("Repeats the whole song queue");
     }
 
     @Override

@@ -7,6 +7,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class SoundCloudCommand extends BasePlayCommand {
     public SoundCloudCommand(MusicBot bot, CommandManager commandManager, AudioPlayerManager playerManager) {
         super(bot, commandManager, playerManager, "soundcloud", "sc");
+        setDescription("Searches for a song from soundcloud");
         // so that when the LoadResultHandler fails it doesn't try to search on youtube :ok_hand:
         this.allowSearch = false;
         this.isSearch = true;

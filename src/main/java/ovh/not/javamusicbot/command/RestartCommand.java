@@ -10,6 +10,7 @@ import static ovh.not.javamusicbot.utils.Utils.formatTrackDuration;
 public class RestartCommand extends Command {
     public RestartCommand(MusicBot bot) {
         super(bot, "restart");
+        setDescription("Plays a song from the beginning");
     }
 
     @Override

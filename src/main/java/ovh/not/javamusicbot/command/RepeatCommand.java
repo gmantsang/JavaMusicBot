@@ -7,6 +7,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class RepeatCommand extends Command {
     public RepeatCommand(MusicBot bot) {
         super(bot, "repeat");
+        setDescription("Loops the current song");
     }
 
     @Override

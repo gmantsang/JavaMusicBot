@@ -17,6 +17,7 @@ public class RadioCommand extends Command {
 
     public RadioCommand(MusicBot bot, CommandManager commandManager, AudioPlayerManager playerManager) {
         super(bot, "radio", "station", "stations", "fm", "r");
+        setDescription("Streams radio stations");
         this.commandManager = commandManager;
         this.playerManager = playerManager;
 

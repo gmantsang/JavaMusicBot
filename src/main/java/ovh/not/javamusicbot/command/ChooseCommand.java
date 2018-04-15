@@ -12,6 +12,7 @@ public class ChooseCommand extends Command {
 
     public ChooseCommand(MusicBot bot, CommandManager commandManager) {
         super(bot,"choose", "pick", "select", "cancel", "c", "choos", "chose");
+        setDescription("Picks from a selection menu");
         this.commandManager = commandManager;
     }
 

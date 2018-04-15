@@ -9,6 +9,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class StopCommand extends Command {
     public StopCommand(MusicBot bot) {
         super(bot, "stop", "leave", "clear");
+        setDescription("Stops playing and leaves the voice channel");
     }
 
     @Override

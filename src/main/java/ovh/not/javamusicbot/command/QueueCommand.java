@@ -33,6 +33,7 @@ public class QueueCommand extends Command {
 
     public QueueCommand(MusicBot bot) {
         super(bot, "queue", "list", "q");
+        setDescription("Shows the song queue");
         owo = new OwO.Builder()
                 .setKey(this.bot.getConfigs().config.owoKey)
                 .setUploadUrl("https://paste.dabbot.org")

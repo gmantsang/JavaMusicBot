@@ -7,6 +7,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class SkipCommand extends Command {
     public SkipCommand(MusicBot bot) {
         super(bot, "skip", "s", "next");
+        setDescription("Plays the next song in the queue");
     }
 
     @Override

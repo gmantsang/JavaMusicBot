@@ -7,6 +7,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class PlayCommand extends BasePlayCommand {
     public PlayCommand(MusicBot bot, CommandManager commandManager, AudioPlayerManager playerManager) {
         super(bot, commandManager, playerManager, "play", "p");
+        setDescription("Adds a song to the queue and begins playing");
     }
 
     @Override

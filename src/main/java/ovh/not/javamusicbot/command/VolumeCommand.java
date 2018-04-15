@@ -9,6 +9,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class VolumeCommand extends Command {
     public VolumeCommand(MusicBot bot) {
         super(bot, "volume", "v");
+        setDescription("Changes the music volume");
     }
 
     @Override

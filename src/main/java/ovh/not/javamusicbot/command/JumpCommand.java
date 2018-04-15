@@ -14,6 +14,7 @@ public class JumpCommand extends Command {
 
     public JumpCommand(MusicBot bot) {
         super(bot,"jump", "seek");
+        setDescription("Skips to a time in the current song");
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.util.List;
 public class ReorderCommand extends Command {
     public ReorderCommand(MusicBot bot) {
         super(bot, "reorder", "order");
+        setDescription("Changes the position of a song in the queue");
     }
 
     @Override

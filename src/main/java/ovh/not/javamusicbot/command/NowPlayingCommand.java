@@ -13,6 +13,7 @@ public class NowPlayingCommand extends Command {
 
     public NowPlayingCommand(MusicBot bot) {
         super(bot, "nowplaying", "current", "now", "np");
+        setDescription("Shows the current song");
     }
 
     @Override

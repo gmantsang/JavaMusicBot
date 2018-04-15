@@ -22,6 +22,7 @@ public class ProvidersCommand extends Command {
 
     public ProvidersCommand(MusicBot bot, AudioPlayerManager playerManager) {
         super(bot, "providers", "sources", "source", "provider");
+        setDescription("Lists all the available sources to play music from");
         this.playerManager = playerManager;
     }
 

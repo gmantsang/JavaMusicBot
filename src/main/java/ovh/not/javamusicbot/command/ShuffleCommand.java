@@ -10,6 +10,7 @@ import java.util.List;
 public class ShuffleCommand extends Command {
     public ShuffleCommand(MusicBot bot) {
         super(bot, "shuffle");
+        setDescription("Shuffles the song queue");
     }
 
     @Override

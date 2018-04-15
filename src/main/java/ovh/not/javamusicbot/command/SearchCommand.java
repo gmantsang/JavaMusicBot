@@ -9,6 +9,7 @@ public class SearchCommand extends Command {
 
     public SearchCommand(MusicBot bot, CommandManager commandManager) {
         super(bot, "search", "lookup", "youtube", "yt", "find");
+        setDescription("Searches for a song on youtube");
         this.commandManager = commandManager;
     }
 

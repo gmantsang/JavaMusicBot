@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,7 +14,8 @@ public abstract class Command {
     private static final Pattern FLAG_PATTERN = Pattern.compile("\\s+-([a-zA-Z]+)");
 
     protected final MusicBot bot;
-    private String[] names;
+    private final String[] names;
+    private Optional<String> description = Optional.empty();
 
     protected Command(MusicBot bot, String name, String... names) {
         this.bot = bot;
@@ -24,6 +26,14 @@ public abstract class Command {
 
     public String[] getNames(){
         return names;
+    }
+
+    public Optional<String> getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = Optional.of(description);
     }
 
     public abstract void on(Context context);

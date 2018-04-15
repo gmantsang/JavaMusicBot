@@ -10,6 +10,7 @@ import java.util.List;
 public class RemoveCommand extends Command {
     public RemoveCommand(MusicBot bot) {
         super(bot, "remove", "delete", "rm");
+        setDescription("Removes a song from the queue");
     }
 
     @SuppressWarnings("unchecked")

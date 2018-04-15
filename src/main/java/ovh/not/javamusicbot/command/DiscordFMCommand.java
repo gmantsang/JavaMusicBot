@@ -29,6 +29,7 @@ public class DiscordFMCommand extends Command {
 
     public DiscordFMCommand(MusicBot bot, CommandManager commandManager, AudioPlayerManager playerManager) {
         super(bot, "discordfm", "dfm");
+        setDescription("Plays music from discord.fm playlists");
         this.commandManager = commandManager;
         this.playerManager = playerManager;
     }

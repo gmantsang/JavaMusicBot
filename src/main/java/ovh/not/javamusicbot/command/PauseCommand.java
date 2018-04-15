@@ -7,6 +7,7 @@ import ovh.not.javamusicbot.MusicBot;
 public class PauseCommand extends Command {
     public PauseCommand(MusicBot bot) {
         super(bot,"pause", "resume");
+        setDescription("Pauses & resumes the song");
     }
 
     @Override

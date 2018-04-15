@@ -24,6 +24,7 @@ public class LoadCommand extends Command {
 
     public LoadCommand(MusicBot bot, AudioPlayerManager playerManager) {
         super(bot, "load", "undump");
+        setDescription("Loads in a queue dump");
         this.playerManager = playerManager;
     }
 
