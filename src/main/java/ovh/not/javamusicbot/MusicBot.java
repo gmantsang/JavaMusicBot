@@ -5,16 +5,19 @@ import com.moandjiezana.toml.Toml;
 import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ovh.not.javamusicbot.audio.guild.GuildAudioManager;
+import ovh.not.javamusicbot.listener.*;
 import ovh.not.javamusicbot.utils.PermissionReader;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
+import java.util.regex.Pattern;
 
 public final class MusicBot {
     private static final Logger logger = LoggerFactory.getLogger(MusicBot.class);
@@ -50,6 +53,7 @@ public final class MusicBot {
 
     private PermissionReader permissionReader;
     private GuildAudioManager guildsManager;
+    private CommandManager commandManager;
     private ShardManager shardManager;
 
     public static void main(String[] args) {
@@ -57,9 +61,18 @@ public final class MusicBot {
         Config config = bot.getConfigs().config;
         bot.permissionReader = new PermissionReader(bot);
         bot.guildsManager = new GuildAudioManager(bot);
+        bot.commandManager = new CommandManager(bot);
+
+        ListenerAdapter[] eventListeners = new ListenerAdapter[] {
+                new GuildJoinListener(bot),
+                new GuildLeaveListener(bot.guildsManager),
+                new GuildVoiceMoveListener(bot.guildsManager),
+                new MessageReceiveListener(bot.commandManager, Pattern.compile(config.regex)),
+                new StartupChangeListener(bot)
+        };
 
         DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder()
-                .addEventListeners(new Listener(bot))
+                .addEventListeners(eventListeners)
                 .setToken(config.token)
                 .setAudioEnabled(true)
                 .setGame(Game.of(Game.GameType.DEFAULT, config.game));

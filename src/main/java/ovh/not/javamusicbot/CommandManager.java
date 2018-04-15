@@ -90,7 +90,7 @@ public class CommandManager {
         }
     }
 
-    Command getCommand(String name) {
+    public Command getCommand(String name) {
         return commands.get(name);
     }
 }
