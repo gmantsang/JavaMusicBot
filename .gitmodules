@@ -1,0 +1,3 @@
+[submodule "discordfm"]
+	path = discordfm
+	url = https://github.com/dabbotorg/discord-fm
