@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class DiscordFMCommand extends Command {
     private static final Logger logger = LoggerFactory.getLogger(DiscordFMCommand.class);
 
-    private static final String DFM_DIRECTORY_PATH = "discordfm/";
+    private static final String DFM_DIRECTORY_PATH = "discordfm/json";
 
     private final CommandManager commandManager;
     private final AudioPlayerManager playerManager;
