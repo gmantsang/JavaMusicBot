@@ -92,13 +92,8 @@ public class RadioCommand extends Command {
         // todo reset state properly lmfao
         musicManager.getScheduler().getQueue().clear();
         musicManager.getScheduler().setRepeat(false);
-        musicManager.getScheduler().setLoop(false);
+        musicManager.getScheduler().setLoop(bot.getConfigs().config.patreon); //Auto restart stream for patrons
         musicManager.getPlayer().stopTrack();
-
-        // Auto restart streams for patrons
-        if(bot.getConfigs().config.patreon) {
-            musicManager.getScheduler().setLoop(true);
-        }
 
         playerManager.loadItem(url, handler);
 
