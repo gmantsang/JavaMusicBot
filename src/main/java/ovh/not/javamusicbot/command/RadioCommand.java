@@ -95,6 +95,11 @@ public class RadioCommand extends Command {
         musicManager.getScheduler().setLoop(false);
         musicManager.getPlayer().stopTrack();
 
+        // Auto restart streams for patrons
+        if(bot.getConfigs().config.patreon) {
+            musicManager.getScheduler().setLoop(true);
+        }
+
         playerManager.loadItem(url, handler);
 
         if (!musicManager.getState().isConnectionOpen()) {
