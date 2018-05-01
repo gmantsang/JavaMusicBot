@@ -21,6 +21,7 @@ public class Config {
     public String supporterRole = null;
     public String superSupporterRole = null;
     public String owoKey = null;
+    public String glanceWebhook = null;
     public String statusWebhook = null;
     public String statusToken = null;
 }
