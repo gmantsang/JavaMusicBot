@@ -47,7 +47,7 @@ public class VolumeCommand extends Command {
             musicManager.getPlayer().setVolume(newVolume);
             context.reply("Set volume to **%d**", newVolume);
         } catch (NumberFormatException e) {
-            context.reply("Invalid volume. Bounds: `10 - 100`");
+            context.reply("Invalid volume. Bounds: `1 - 150`");
         }
     }
 }
