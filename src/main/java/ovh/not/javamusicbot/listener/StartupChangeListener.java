@@ -29,6 +29,7 @@ public class StartupChangeListener extends ListenerAdapter {
         public GlanceMessage(StatusChangeEvent event) {
             this.id = event.getEntity().getShardInfo().getShardId();
 
+	    int status = 0;
             switch (event.getNewStatus()) {
                 case WAITING_TO_RECONNECT:
                 case RECONNECT_QUEUED:
@@ -50,10 +51,9 @@ public class StartupChangeListener extends ListenerAdapter {
                 case SHUTDOWN:
                     status = 5;
                     break;
-                default:
-                    status = 0;
-                    break;
             }
+
+	    this.status = status;
         }
     }
 
