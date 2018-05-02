@@ -23,13 +23,12 @@ import static ovh.not.javamusicbot.MusicBot.JSON_MEDIA_TYPE;
 
 public class StartupChangeListener extends ListenerAdapter {
     private class GlanceMessage {
-        public int ID;
-        public int Status;
+        public final int id;
+        public final int status;
 
         public GlanceMessage(StatusChangeEvent event) {
-            this.ID = event.getEntity().getShardInfo().getShardId();
+            this.id = event.getEntity().getShardInfo().getShardId();
 
-            int status = 0;
             switch (event.getNewStatus()) {
                 case WAITING_TO_RECONNECT:
                 case RECONNECT_QUEUED:
@@ -55,7 +54,6 @@ public class StartupChangeListener extends ListenerAdapter {
                     status = 0;
                     break;
             }
-            this.Status = status;
         }
     }
 
