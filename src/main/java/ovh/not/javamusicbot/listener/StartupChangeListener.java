@@ -26,7 +26,9 @@ import static ovh.not.javamusicbot.MusicBot.GSON;
 import static ovh.not.javamusicbot.MusicBot.JSON_MEDIA_TYPE;
 
 public class StartupChangeListener extends ListenerAdapter {
-    private class GlanceMessage {
+    private static class GlanceMessage {
+	private static final Logger LOGGER = LoggerFactory.getLogger(GlanceMessage.class);
+
         public final int id;
         public final int status;
 	
@@ -47,6 +49,7 @@ public class StartupChangeListener extends ListenerAdapter {
                 case ATTEMPTING_TO_RECONNECT:
                 case CONNECTING_TO_WEBSOCKET:
                 case IDENTIFYING_SESSION:
+		case AWAITING_LOGIN_CONFIRMATION:
                     status = 2;
                     break;
                 case CONNECTED:
@@ -60,6 +63,8 @@ public class StartupChangeListener extends ListenerAdapter {
                 case SHUTDOWN:
                     status = 5;
                     break;
+		default:
+		    LOGGER.warn("unhandled status {}", event.getNewStatus().name());
             }
 
 	    this.status = status;
@@ -85,12 +90,6 @@ public class StartupChangeListener extends ListenerAdapter {
 		public void run() {
 		    // prevent other status updates from sending
 		    shuttingDown = true;
-
-		    /*try {
-			Thread.sleep(1000); // sleep for 1s so any outstanding requests are processed
-		    } catch (InterruptedException e) {
-			e.printStackTrace();	
-		    }*/
 
 		    for (int id = minShardId; id < maxShardId + 1; id++) {
 			GlanceMessage msg = new GlanceMessage(id, 5); // status 5 = SHUTDOWN
