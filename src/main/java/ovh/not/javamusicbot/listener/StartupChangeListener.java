@@ -17,6 +17,10 @@ import ovh.not.javamusicbot.MusicBot;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Date;
+import java.lang.Runtime;
+import java.lang.Integer;
+import java.lang.Thread;
+import java.lang.InterruptedException;
 
 import static ovh.not.javamusicbot.MusicBot.GSON;
 import static ovh.not.javamusicbot.MusicBot.JSON_MEDIA_TYPE;
@@ -25,6 +29,11 @@ public class StartupChangeListener extends ListenerAdapter {
     private class GlanceMessage {
         public final int id;
         public final int status;
+	
+	public GlanceMessage(int id, int status) {
+	    this.id = id;
+	    this.status = status;
+	}
 
         public GlanceMessage(StatusChangeEvent event) {
             this.id = event.getEntity().getShardInfo().getShardId();
@@ -60,9 +69,48 @@ public class StartupChangeListener extends ListenerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(StartupChangeListener.class);
 
     private final MusicBot bot;
+    private volatile boolean shuttingDown = false;
 
-    public StartupChangeListener(MusicBot bot) {
+    public StartupChangeListener(MusicBot bot, String[] args) {
         this.bot = bot;
+	
+	Config config = bot.getConfigs().config;
+	if (config.glanceWebhook != null && config.glanceWebhook.length() > 0) {
+	    int minShardId = Integer.parseInt(args[1]);
+	    int maxShardId = Integer.parseInt(args[2]);
+
+	    // reports all shards in cluster as offline on shutdown
+	    Runtime.getRuntime().addShutdownHook(new Thread() {
+		@Override
+		public void run() {
+		    // prevent other status updates from sending
+		    shuttingDown = true;
+
+		    /*try {
+			Thread.sleep(1000); // sleep for 1s so any outstanding requests are processed
+		    } catch (InterruptedException e) {
+			e.printStackTrace();	
+		    }*/
+
+		    for (int id = minShardId; id < maxShardId + 1; id++) {
+			GlanceMessage msg = new GlanceMessage(id, 5); // status 5 = SHUTDOWN
+
+			RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, GSON.toJson(msg));
+
+			Request request = new Request.Builder()
+				.url(config.glanceWebhook)
+				.method("POST", body)
+				.build();
+
+			try {
+			    MusicBot.HTTP_CLIENT.newCall(request).execute().close();
+			} catch (IOException e) {
+			    LOGGER.error("Error posting to glance", e);
+			}
+		    }
+		}
+	    });
+	}
     }
 
     @Override
@@ -83,7 +131,7 @@ public class StartupChangeListener extends ListenerAdapter {
         LOGGER.info("Status changed from {} to {}", oldStatus.name(), status.name());
 
         Config config = bot.getConfigs().config;
-        if (config.glanceWebhook != null && config.glanceWebhook.length() > 0) {
+        if (!shuttingDown && config.glanceWebhook != null && config.glanceWebhook.length() > 0) {
             GlanceMessage msg = new GlanceMessage(event);
 
             RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, GSON.toJson(msg));

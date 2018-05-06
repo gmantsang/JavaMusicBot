@@ -68,7 +68,7 @@ public final class MusicBot {
                 new GuildLeaveListener(bot.guildsManager),
                 new GuildVoiceMoveListener(bot.guildsManager),
                 new MessageReceiveListener(bot.commandManager, Pattern.compile(config.regex)),
-                new StartupChangeListener(bot)
+                new StartupChangeListener(bot, args)
         };
 
         DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder()
