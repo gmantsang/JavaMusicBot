@@ -27,20 +27,23 @@ import static ovh.not.javamusicbot.MusicBot.JSON_MEDIA_TYPE;
 
 public class StartupChangeListener extends ListenerAdapter {
     private static class GlanceMessage {
-	private static final Logger LOGGER = LoggerFactory.getLogger(GlanceMessage.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(GlanceMessage.class);
 
+        public final int bot;
         public final int id;
         public final int status;
-	
-	public GlanceMessage(int id, int status) {
-	    this.id = id;
-	    this.status = status;
-	}
 
-        public GlanceMessage(StatusChangeEvent event) {
+        public GlanceMessage(int id, int status, int bot) {
+            this.bot = bot;
+            this.id = id;
+            this.status = status;
+        }
+
+        public GlanceMessage(StatusChangeEvent event, int bot) {
+            this.bot = bot;
             this.id = event.getEntity().getShardInfo().getShardId();
 
-	    int status = 0;
+            int status = 0;
             switch (event.getNewStatus()) {
                 case WAITING_TO_RECONNECT:
                 case RECONNECT_QUEUED:
@@ -49,7 +52,7 @@ public class StartupChangeListener extends ListenerAdapter {
                 case ATTEMPTING_TO_RECONNECT:
                 case CONNECTING_TO_WEBSOCKET:
                 case IDENTIFYING_SESSION:
-		case AWAITING_LOGIN_CONFIRMATION:
+                case AWAITING_LOGIN_CONFIRMATION:
                     status = 2;
                     break;
                 case CONNECTED:
@@ -63,11 +66,11 @@ public class StartupChangeListener extends ListenerAdapter {
                 case SHUTDOWN:
                     status = 5;
                     break;
-		default:
-		    LOGGER.warn("unhandled status {}", event.getNewStatus().name());
+                default:
+                    LOGGER.warn("unhandled status {}", event.getNewStatus().name());
             }
 
-	    this.status = status;
+            this.status = status;
         }
     }
 
@@ -92,7 +95,7 @@ public class StartupChangeListener extends ListenerAdapter {
 		    shuttingDown = true;
 
 		    for (int id = minShardId; id < maxShardId + 1; id++) {
-			GlanceMessage msg = new GlanceMessage(id, 5); // status 5 = SHUTDOWN
+			GlanceMessage msg = new GlanceMessage(id, 5, config.botIdentity); // status 5 = SHUTDOWN
 
 			RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, GSON.toJson(msg));
 
@@ -131,7 +134,7 @@ public class StartupChangeListener extends ListenerAdapter {
 
         Config config = bot.getConfigs().config;
         if (!shuttingDown && config.glanceWebhook != null && config.glanceWebhook.length() > 0) {
-            GlanceMessage msg = new GlanceMessage(event);
+            GlanceMessage msg = new GlanceMessage(event, config.botIdentity);
 
             RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, GSON.toJson(msg));
 
