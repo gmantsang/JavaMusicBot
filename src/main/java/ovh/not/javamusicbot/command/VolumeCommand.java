@@ -1,6 +1,7 @@
 package ovh.not.javamusicbot.command;
 
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import ovh.not.javamusicbot.Command;
 import ovh.not.javamusicbot.audio.guild.GuildAudioController;
@@ -34,6 +35,12 @@ public class VolumeCommand extends Command {
                 && !this.bot.getPermissionReader().allowedSuperSupporterPatronAccess(guild)) {
             context.reply("**The volume command is dabBot premium only!**" +
                     "\nDonate for the `Super supporter` tier on Patreon at https://patreon.com/dabbot to gain access.");
+            return;
+        }
+        
+        VoiceChannel channel = context.getEvent().getMember().getVoiceState().getChannel();
+        if (channel == null) {
+            context.reply("You must be in a voice channel!");
             return;
         }
 
