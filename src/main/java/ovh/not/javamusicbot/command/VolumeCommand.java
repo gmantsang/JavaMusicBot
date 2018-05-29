@@ -17,7 +17,7 @@ public class VolumeCommand extends Command {
     public void on(Context context) {
         if (!this.bot.getConfigs().config.patreon) {
             context.reply("**The volume command is dabBot premium only!**" +
-                    "\nDonate for the `Super supporter` tier on Patreon at https://patreon.com/dabbot to gain access.");
+                    "\nDonate for the `Volume Control` tier on Patreon at https://patreon.com/dabbot to gain access.");
             return;
         }
 
@@ -30,11 +30,11 @@ public class VolumeCommand extends Command {
             return;
         }
 
-        // user is not a super supporter & there is not a super supporter with admin on the server
+        // user does not have Volume Control tier & there is not a user that has this tier with admin on the server
         if (!this.bot.getPermissionReader().allowedSuperSupporterPatronAccess(event.getAuthor())
                 && !this.bot.getPermissionReader().allowedSuperSupporterPatronAccess(guild)) {
             context.reply("**The volume command is dabBot premium only!**" +
-                    "\nDonate for the `Super supporter` tier on Patreon at https://patreon.com/dabbot to gain access.");
+                    "\nDonate for the `Volume Control` tier on Patreon at https://patreon.com/dabbot to gain access.");
             return;
         }
         
