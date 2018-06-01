@@ -62,7 +62,7 @@ public class LoadCommand extends Command {
             Request request = new Request.Builder().url(url).build();
             Response response = MusicBot.HTTP_CLIENT.newCall(request).execute();
             tracks = new JSONArray(response.body().string());
-        } catch (IOException | JSONException e) {
+        } catch (Exception e) { // catch all exceptions PLEASE
             logger.error("error occurred loading tracks from a dump", e);
             context.reply("An error occurred! %s", e.getMessage());
             return;
