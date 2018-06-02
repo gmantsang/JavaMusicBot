@@ -1,3 +1,7 @@
+# Copyright 2018 dabbot.org all rights reserved
+# This means you do not have any rights to this file
+# Licensing for the other files in this project do not apply to this file
+
 [radioStations]
   "1 Live Diggi"                     = "http://wdr-1live-diggi.icecast.wdr.de/wdr/1live/diggi/mp3/128/stream.mp3"
   "100% NL"                          = "http://19983.live.streamtheworld.com/100PNL_MP3_SC?"
