@@ -8,6 +8,10 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.webhook.WebhookClient;
+import net.dv8tion.jda.webhook.WebhookClientBuilder;
+import net.dv8tion.jda.webhook.WebhookMessage;
+import net.dv8tion.jda.webhook.WebhookMessageBuilder;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.slf4j.Logger;
@@ -82,24 +86,19 @@ public class AdminCommand extends Command {
         String content = String.format("[%s] tried invoking: `%s`",
                 context.getEvent().getAuthor().getAsMention(), context.getEvent().getMessage().getContentRaw());
 
-        MessageEmbed embed = new EmbedBuilder()
-                .setColor(Color.RED)
-                .setDescription(content)
-                .setTimestamp(new Date().toInstant())
+        WebhookMessage message = new WebhookMessageBuilder()
+                .addEmbeds(new EmbedBuilder()
+                    .setColor(Color.RED)
+                    .setDescription(content)
+                    .setTimestamp(new Date().toInstant())
+                    .build())
+                .setUsername("admin log")
                 .build();
 
-        RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, embed.toJSONObject().toString());
-
-        Request request = new Request.Builder()
-                .url(config.auditWebhook)
-                .method("POST", body)
+        WebhookClient client = new WebhookClientBuilder(config.auditWebhook)
                 .build();
 
-        try {
-            MusicBot.HTTP_CLIENT.newCall(request).execute().close();
-        } catch (IOException e) {
-            logger.error("Error posting audit log status", e);
-        }
+        client.send(message);
     }
 
     private enum RequiredRole {
