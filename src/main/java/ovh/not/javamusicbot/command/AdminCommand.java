@@ -3,9 +3,13 @@ package ovh.not.javamusicbot.command;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.bot.sharding.ShardManager;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ovh.not.javamusicbot.*;
@@ -15,12 +19,12 @@ import ovh.not.javamusicbot.utils.Utils;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.awt.*;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static ovh.not.javamusicbot.MusicBot.JSON_MEDIA_TYPE;
 
 public class AdminCommand extends Command {
     private static final Logger logger = LoggerFactory.getLogger(AdminCommand.class);
@@ -57,6 +61,8 @@ public class AdminCommand extends Command {
             return;
         }
 
+        auditLog(config, context);
+
         if (context.getArgs().length == 0) {
             context.reply(subCommandsString);
             return;
@@ -70,6 +76,30 @@ public class AdminCommand extends Command {
         Command command = subCommands.get(context.getArgs()[0]);
         context.setArgs(Arrays.copyOfRange(context.getArgs(), 1, context.getArgs().length));
         command.on(context);
+    }
+
+    private void auditLog(Config config, Context context) {
+        String content = String.format("[%s] tried invoking: `%s`",
+                context.getEvent().getAuthor().getAsMention(), context.getEvent().getMessage().getContentRaw());
+
+        MessageEmbed embed = new EmbedBuilder()
+                .setColor(Color.RED)
+                .setDescription(content)
+                .setTimestamp(new Date().toInstant())
+                .build();
+
+        RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, embed.toJSONObject().toString());
+
+        Request request = new Request.Builder()
+                .url(config.statusWebhook)
+                .method("POST", body)
+                .build();
+
+        try {
+            MusicBot.HTTP_CLIENT.newCall(request).execute().close();
+        } catch (IOException e) {
+            logger.error("Error posting audit log status", e);
+        }
     }
 
     private enum RequiredRole {

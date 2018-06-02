@@ -23,6 +23,7 @@ public class Config {
     public String owoKey = null;
     public String glanceWebhook = null;
     public String statusWebhook = null;
+    public String auditWebhook = null;
     public String statusToken = null;
     // 0 for main bot, 1 for patron 1, 2 for patron 2
     public Integer botIdentity = 0;
