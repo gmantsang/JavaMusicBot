@@ -91,7 +91,7 @@ public class AdminCommand extends Command {
         RequestBody body = RequestBody.create(JSON_MEDIA_TYPE, embed.toJSONObject().toString());
 
         Request request = new Request.Builder()
-                .url(config.statusWebhook)
+                .url(config.auditWebhook)
                 .method("POST", body)
                 .build();
 
