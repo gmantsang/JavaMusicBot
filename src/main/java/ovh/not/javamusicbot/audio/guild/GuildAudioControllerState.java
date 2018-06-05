@@ -1,10 +1,16 @@
 package ovh.not.javamusicbot.audio.guild;
 
+import io.prometheus.client.Gauge;
+
 import java.util.Optional;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class GuildAudioControllerState {
+    static final Gauge audioStreams = Gauge.build()
+            .name("dab_streams_total").help("Total audio streams.")
+            .register();
+
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
     private Optional<Long> voiceChannelId = Optional.empty();
@@ -38,9 +44,11 @@ public class GuildAudioControllerState {
 
     public void setVoiceConnectionOpen(long voiceChannelId) {
         setVoiceChannelId(Optional.of(voiceChannelId));
+        audioStreams.inc();
     }
 
     public void setVoiceConnectionClosed() {
         setVoiceChannelId(Optional.empty());
+        audioStreams.dec();
     }
 }
