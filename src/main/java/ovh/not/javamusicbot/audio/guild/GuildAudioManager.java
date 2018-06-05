@@ -1,7 +1,6 @@
 package ovh.not.javamusicbot.audio.guild;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import io.prometheus.client.Gauge;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import ovh.not.javamusicbot.MusicBot;

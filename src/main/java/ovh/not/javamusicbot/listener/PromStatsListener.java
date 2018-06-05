@@ -3,16 +3,11 @@ package ovh.not.javamusicbot.listener;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ResumedEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PromStatsListener extends ListenerAdapter {
     static final Gauge guilds = Gauge.build()
