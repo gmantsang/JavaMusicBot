@@ -1,6 +1,7 @@
 package ovh.not.javamusicbot.command;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import io.prometheus.client.Counter;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import ovh.not.javamusicbot.Command;
@@ -10,6 +11,10 @@ import ovh.not.javamusicbot.audio.guild.GuildAudioController;
 import ovh.not.javamusicbot.utils.LoadResultHandler;
 
 public class RadioCommand extends Command {
+    static final Counter radiosUsed = Counter.build()
+            .name("dab_radios_total").help("Total radios used.")
+            .labelNames("shard", "radio_name").register();
+
     private final CommandManager commandManager;
     private final AudioPlayerManager playerManager;
 
@@ -70,6 +75,9 @@ public class RadioCommand extends Command {
             context.reply("Invalid station! For usage & stations, use `{{prefix}}radio`");
             return;
         }
+
+        String shard = Integer.toString(context.getEvent().getJDA().getShardInfo().getShardId());
+        radiosUsed.labels(shard, station.toLowerCase()).inc();
 
         VoiceChannel channel = context.getEvent().getMember().getVoiceState().getChannel();
         if (channel == null) {
