@@ -67,7 +67,7 @@ public class MessageReceiveListener extends ListenerAdapter {
             context.setArgs(matches);
         }
 
-        Histogram.Timer requestTimer = commandLatency.labels(shard, name).startTimer();
+        Histogram.Timer requestTimer = commandLatency.labels(shard, command.getNames()[0]).startTimer();
         try {
             command.on(context);
         } finally {
