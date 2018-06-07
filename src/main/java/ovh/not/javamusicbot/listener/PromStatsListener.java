@@ -34,6 +34,10 @@ public class PromStatsListener extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
         ready.inc();
+
+        for (JDA jda : event.getJDA().asBot().getShardManager().getShards()) {
+            setGuildCount(jda);
+        }
     }
 
     @Override
