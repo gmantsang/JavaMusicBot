@@ -21,8 +21,7 @@ public class GuildAudioManager {
     }
 
     public GuildAudioController getOrCreate(Guild guild, TextChannel textChannel, AudioPlayerManager playerManager) {
-        GuildAudioController manager = guildAudioControllers.computeIfAbsent(guild.getIdLong(), $ ->
-                new GuildAudioController(bot, guild, textChannel.getIdLong(), playerManager, executorService));
+        GuildAudioController manager = guildAudioControllers.computeIfAbsent(guild.getIdLong(), $ -> new GuildAudioController(bot, guild, textChannel.getIdLong(), playerManager, executorService));
 
         manager.getScheduler().setTextChannelId(textChannel.getIdLong());
         return manager;

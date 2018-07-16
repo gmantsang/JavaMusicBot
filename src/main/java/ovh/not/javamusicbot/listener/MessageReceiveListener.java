@@ -1,5 +1,8 @@
 package ovh.not.javamusicbot.listener;
 
+import io.prometheus.client.Counter;
+import io.prometheus.client.Histogram;
+import io.prometheus.client.Summary;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -11,6 +14,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MessageReceiveListener extends ListenerAdapter {
+    static final Counter messages = Counter.build()
+            .name("dab_messages_total").help("Total messages received.")
+            .labelNames("shard").register();
+    static final Histogram commandLatency = Histogram.build()
+            .name("dab_commands_latency_seconds").help("Command latency in seconds")
+            .labelNames("shard", "command_name").register();
+
     private final CommandManager commandManager;
     private final Pattern commandPattern;
 
@@ -21,6 +31,9 @@ public class MessageReceiveListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        String shard = Integer.toString(event.getJDA().getShardInfo().getShardId());
+        messages.labels(shard).inc();
+
         User author = event.getAuthor();
         if (author.isBot() || author.getId().equalsIgnoreCase(event.getJDA().getSelfUser().getId())) {
             return;
@@ -54,6 +67,11 @@ public class MessageReceiveListener extends ListenerAdapter {
             context.setArgs(matches);
         }
 
-        command.on(context);
+        Histogram.Timer requestTimer = commandLatency.labels(shard, command.getNames()[0]).startTimer();
+        try {
+            command.on(context);
+        } finally {
+            requestTimer.observeDuration();
+        }
     }
 }

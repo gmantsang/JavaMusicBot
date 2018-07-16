@@ -2,6 +2,8 @@ package ovh.not.javamusicbot;
 
 import com.google.gson.Gson;
 import com.moandjiezana.toml.Toml;
+import io.prometheus.client.exporter.HTTPServer;
+import io.prometheus.client.hotspot.DefaultExports;
 import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.entities.Game;
@@ -17,6 +19,7 @@ import ovh.not.javamusicbot.utils.PermissionReader;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public final class MusicBot {
@@ -68,7 +71,8 @@ public final class MusicBot {
                 new GuildLeaveListener(bot.guildsManager),
                 new GuildVoiceMoveListener(bot.guildsManager),
                 new MessageReceiveListener(bot.commandManager, Pattern.compile(config.regex)),
-                new StartupChangeListener(bot, args)
+                new StartupChangeListener(bot, args),
+                new PromStatsListener()
         };
 
         DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder()
@@ -90,6 +94,18 @@ public final class MusicBot {
                 logger.warn("Could not instantiate with given args! Usage: <shard total> <min shard> <max shard>");
                 return;
             }
+        }
+
+
+        if (args.length > 3) {
+            int port = Integer.parseInt(args[3]);
+            try {
+                DefaultExports.initialize();
+                HTTPServer server = new HTTPServer(port);
+            } catch (IOException e) {
+                logger.error("initializing prometheus failed", e);
+            }
+
         }
 
         // todo set reconnect ipc queue

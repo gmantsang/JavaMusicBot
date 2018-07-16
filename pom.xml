@@ -59,9 +59,19 @@
             <version>8.0.3</version>
         </dependency>
         <dependency>
-            <groupId>com.datadoghq</groupId>
-            <artifactId>java-dogstatsd-client</artifactId>
-            <version>2.3</version>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_hotspot</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_httpserver</artifactId>
+            <version>0.4.0</version>
         </dependency>
 
         <!-- owo.whats-th.is -->

@@ -1,5 +1,6 @@
 package ovh.not.javamusicbot.audio.guild;
 
+import io.prometheus.client.Gauge;
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
@@ -16,6 +17,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class GuildAudioControllerConnector {
+    static final Gauge audioStreams = Gauge.build()
+            .name("dab_streams_total").help("Total audio streams.")
+            .register();
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GuildAudioController.class);
 
     private final Lock lock = new ReentrantLock();
@@ -45,7 +50,11 @@ public class GuildAudioControllerConnector {
                 lock.lock();
                 try {
                     AudioManager audioManager = guild.getAudioManager();
+                    boolean inc = !audioManager.isConnected();
                     audioManager.openAudioConnection(voiceChannel);
+                    if (inc) {
+                        audioStreams.inc();
+                    }
                     audioManager.setSelfDeafened(true);
                     state.setVoiceConnectionOpen(voiceChannel.getIdLong());
                 } finally {
@@ -80,7 +89,11 @@ public class GuildAudioControllerConnector {
         executorService.submit(() -> {
             lock.lock();
             try {
+                boolean dec = guild.getAudioManager().isConnected();
                 guild.getAudioManager().closeAudioConnection();
+                if (dec) {
+                    audioStreams.dec();
+                }
                 state.setVoiceConnectionClosed();
             } finally {
                 lock.unlock();
