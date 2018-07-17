@@ -73,6 +73,13 @@ public class LoadCommand extends Command {
         musicManager.getScheduler().setLoop(false);
         musicManager.getPlayer().stopTrack();
 
+        logger.info(String.format("loaddbg> %s in %s on %s trying to load %s from %s",
+                context.getEvent().getAuthor().getId(),
+                context.getEvent().getChannel().getId(),
+                context.getEvent().getJDA().getShardInfo().getShardString(),
+                tracks.length(),
+                url));
+
         for (int i = 0; i < tracks.length(); i++) {
             String encoded = tracks.getString(i);
 
